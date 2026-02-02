@@ -1,0 +1,4 @@
+# boxing clock config
+
+timer_settings:
+  timer_update_interval: 1000 # milliseconds
