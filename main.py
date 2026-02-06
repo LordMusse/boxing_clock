@@ -6,6 +6,7 @@ from PySide6 import QtQuick
 sys.path.append('./logic')
 from config import MyConfig
 from QmlIntegration import Bridge
+import time
 
 if __name__ == "__main__":
     app = QGuiApplication()

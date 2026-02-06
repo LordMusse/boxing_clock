@@ -1,4 +1,4 @@
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject Signal
 from config_loader import load_config
 import time
 
@@ -7,28 +7,31 @@ class BoxingTimer (QObject):
         super().__init__()
 
         self.config = load_config("timer_settings")
-        self.current_time = 0 #milliseconds
-        self.current_interval = 0
-        self.timer_active = False
-        self.base_timer()
-
-    def base_timer(self):
-        timer = QTimer(self)
-        timer.timeout.connect(self.update_timer)
-        timer.start(self.config["timer_update_interval"])
+        self.time_remaining = 0 #milliseconds
 
     time_updated = Signal()
-
-    def update_timer(self):
-        if timer_active:
-            current_time + self.config["timer_update_interval"]
-            time_updated.emit()
-            print("time incremented")
-        else:
-            print("Timer is inactive")
     
-    def activate_timer(self, minutes, seconds):
-        self.current_time = 0
+    interval_completed = Signal()
+
+    def stop_timer(self):
+    
+    def activate_interval_timer(self, list_of_interval_times): #in seconds
+        for interval_time in list_of_interval_times:
+            run_interval(interval_time)
+            interval_completed.emit()
+
+    def run_interval(self, interval_time): #in seconds
+        interval_ending = time.time() + interval_time
+        self.time_remaining = interval_ending
+        while True:
+            current_time = time.time()
+            if current_time == interval_ending:
+                break
+            self.time_remaining = interval_ending - current_time
+            sleep(self.config["timer_update_interval"])
+
+
+        self.current_time = 
         self.timer_active = True
         self.current_interval = ((minutes * 60) + seconds) * 1000
 
