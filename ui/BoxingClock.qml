@@ -1,20 +1,17 @@
 import QtQuick 2.15
 
 Rectangle {
-  id: picture_space
-  width: parent.width
-  height: parent.height
+  id: root
 
-  color: "#2A83A7"
-
-  anchors {
-    bottom: parent.bottom
-    left: parent.left
-  }
+  color: "red"
 
   Text {
     id: timer
-    text: "00:00"
+    anchors.centerIn: root
+    text: boxing_timer.time_remaining_property
+    color: "white"
+    font.pixelSize: root.height*9/10
+    renderType: Text.CurveRendering
+    antialiasing: true
   }
-
 }
