@@ -11,30 +11,35 @@ class BoxingTimer (QObject):
     
     def __init__(self):
         super().__init__()
+        self.config = load_config("timer_settings")
         self.timer_1hz = QTimer()
         self.timer_1hz.start(1000)
         self.timer_1hz.timeout.connect(self.timer_tick)
-        self.config = load_config("timer_settings")
         self.timer_active = False
         self.interval_number = 0
-        self.interval = [10] #seconds
+        self.interval = [20] #seconds
         self.interval_repetitions = 1
         self.seconds_remaining = 0 #seconds
 
     # Slots
     def get_time_remaining(self):
-        return "{0}:{1}".format(self.seconds_remaining//60, self.seconds_remaining%60)
+        minutes = str(self.seconds_remaining//60)
+        seconds = 100 + self.seconds_remaining%60
+        seconds_first_digit = str(seconds)[1]
+        seconds_second_digit = str(seconds)[2]
+        return "{0}:{1}{2}".format(minutes, seconds_first_digit, seconds_second_digit)
 
     # Properties
     time_remaining_property = Property(str, get_time_remaining, notify=time_updated)
 
     # Methods
     def start_interval(self):
-        print("starting interval")
+        print("starting interval timer")
         self.timer_active = True
         self.seconds_remaining = self.interval[self.interval_number%len(self.interval)]
 
     def reset_timer(self):
+        print("resetting...")
         self.interval_number = 0
     
     def stop_timer(self):
@@ -48,14 +53,18 @@ class BoxingTimer (QObject):
             # Interval completed
             else: 
                 self.interval_completed.emit()
+                print("interval done")
                 self.interval_number = self.interval_number + 1
                 if self.interval_number/len(self.interval):
                     self.timer_complete.emit()
+                    print("timers done")
                     self.stop_timer()
                 else:
                     self.start_interval()
 
+
             self.time_updated.emit()
+            print(self.time_remaining_property)
         else:
             pass
 
@@ -68,22 +77,13 @@ if __name__ == "__main__":
     print("initiating timer")
     boxing_timer = BoxingTimer()
 
-    def print_time():
-        print(boxing_timer.time_remaining_property)
-    
-    def print_interval():
-        print("interval done")
-    
     def wait_for_restart():
-        print("restarting")
-        boxing_timer.reset_timer()
+        print("press any key to restart")
+        input()
         boxing_timer.start_interval()
 
-    print("starting interval")
     boxing_timer.start_interval()
-    print("connecting signal")
-    boxing_timer.time_updated.connect(print_time)
-    boxing_timer.interval_completed.connect(print_interval)
+    print("connecting signals")
     boxing_timer.timer_complete.connect(wait_for_restart)
 
     app.exec()
