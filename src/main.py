@@ -1,9 +1,7 @@
 import sys
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
-from PySide6.QtCore import QThreadPool
 from logic.timer import BoxingTimer
-from logic.pedal_reader import PedalReader
 
 if __name__ == "__main__":
     app = QGuiApplication()
@@ -12,15 +10,6 @@ if __name__ == "__main__":
     #ladda timer
     boxing_timer = BoxingTimer()
     engine.rootContext().setContextProperty("boxing_timer", boxing_timer)
-
-    #ladda pedalläsaren
-    pedal_reader = PedalReader()
-    threadpool = QThreadPool()
-    thread_count = threadpool.maxThreadCount()
-    # this isn't run for some reason?
-    threadpool.start(pedal_reader)
-
-    pedal_reader.pedal_pressed.connect(boxing_timer.pedal_pressed)
 
     # kopplar ihop motorns avstängning med aplikationens
     engine.quit.connect(app.quit)

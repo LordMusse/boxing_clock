@@ -10,6 +10,22 @@
 *.dll
 *.dylib
 
+# C
+*.hex
+*.d
+*.elf
+*.cmf
+*.hxl
+*.sym
+*.sdb
+*.lst
+*.rlf
+*.s
+*.p1
+
+# Python
+*.pyc
+
 # Qt-es
 object_script.*.Release
 object_script.*.Debug
@@ -52,3 +68,6 @@ compile_commands.json
 *creator.user*
 
 *_qmlcache.qrc
+
+# header files and linker scripts
+*Microchip.PIC10-12Fxxx_DFP.1.8.184/

@@ -2,8 +2,6 @@ from PySide6.QtCore import QObject, Signal, Slot, QTimer, Property
 from logic.config_loader import load_config
 from math import *
 
-#from gpiozero import button
-
 timers = []
 
 class BoxingTimer (QObject):
@@ -64,6 +62,13 @@ class BoxingTimer (QObject):
         self.interval_number = 0
         self.seconds_remaining = self.interval[self.interval_number]
         self.time_updated.emit()
+
+    @Slot()
+    def pedal_pressed(self):
+        if self.timer_active == True:
+            self.stop_timer()
+        else:
+            self.start_interval()
 
     # Properties
     time_remaining_property = Property(str, get_time_remaining, notify=time_updated)
