@@ -29,3 +29,6 @@ https://github.com/jaka-fi/PICkitminus
 
 ## UI and timer
 Built with python and QML
+
+Mediacontrol using playerctl on linux:
+https://github.com/altdesktop/playerctl

@@ -12,24 +12,24 @@ Rectangle {
       bottom: root.bottom
       left: root.left
     }
-    text: "start"
+    text: boxing_timer.timer_active_property ? "stop" : "start"
     z: 1000
     onClicked: {
-      boxing_timer.start_interval();
+      if (boxing_timer.timer_active_property){
+        boxing_timer.stop_timer();
+      } else {
+        boxing_timer.start_interval();
+      }
     }
   }
 
-  Button {
-    id: stop_timer
+  Stats {
+    id: stats
     anchors {
       top: root.top
       bottom: root.bottom
+      left: start_interval.left
       right: root.right
-      left: start_interval.right
-    }
-    text: "stop"
-    onClicked: {
-      boxing_timer.stop_timer();
     }
   }
 }

@@ -1,5 +1,7 @@
-import yaml
 from pathlib import Path
+
+import yaml
+
 
 # detta hämtar configurationen från en json-fil
 def load_config(category):
