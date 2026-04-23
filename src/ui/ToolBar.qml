@@ -2,15 +2,15 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Rectangle {
-  id: root
+  id: toolbar
 
   Button {
     id: start_interval
-    width: root.width/2
+    width: toolbar.width/2
     anchors {
-      top: root.top
-      bottom: root.bottom
-      left: root.left
+      top: toolbar.top
+      bottom: toolbar.bottom
+      left: toolbar.left
     }
     text: boxing_timer.timer_active_property ? "stop" : "start"
     z: 1000
@@ -26,10 +26,10 @@ Rectangle {
   Stats {
     id: stats
     anchors {
-      top: root.top
-      bottom: root.bottom
-      left: start_interval.left
-      right: root.right
+      top: parent.top
+      bottom: toolbar.bottom
+      left: start_interval.right
+      right: toolbar.right
     }
   }
 }

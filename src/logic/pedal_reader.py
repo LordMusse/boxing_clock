@@ -15,7 +15,7 @@ class PedalReader(QRunnable):
     # button polling
     @Slot()
     def run(self):
-        serial_interface = serial.Serial("/dev/ttyUSB1")
+        serial_interface = serial.Serial("/dev/ttyUSB0")
         print("serial: ", serial_interface.name)
         last_state = b"\x00"
         current_state = b"\x00"

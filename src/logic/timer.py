@@ -15,6 +15,7 @@ class BoxingTimer(QObject):
     timer_complete = Signal()
     timer_active_signal = Signal()
     time_to_rest_signal = Signal()
+    intervals_updated = Signal()
 
     def __init__(self):
         super().__init__()
@@ -25,8 +26,8 @@ class BoxingTimer(QObject):
         self.timer_1hz.timeout.connect(self.timer_tick)
         self.timer_active = False
         self.interval_number = 0
-        self.interval = [11, 5]  # seconds
-        self.interval_repetitions = 4
+        self.interval = [120, 30]  # seconds
+        self.interval_repetitions = 8
         self.seconds_remaining = self.interval[self.interval_number]  # seconds
         self.time_to_rest = False
 
@@ -43,7 +44,7 @@ class BoxingTimer(QObject):
         return self.timer_active
 
     def get_current_repetition(self):
-        current_repetition = self.interval_repetitions - ceil(
+        current_repetition = self.interval_repetitions // 2 - ceil(
             self.interval_number / self.interval_repetitions
         )
         print("current_repetition: {0}".format(current_repetition))
@@ -61,6 +62,28 @@ class BoxingTimer(QObject):
     def get_time_to_rest(self):
         return self.time_to_rest
 
+    def get_work_interval(self):
+        return self.interval[0]
+
+    # time string "m:ss"
+    @Slot(str)
+    def set_work_interval(self, time_string):
+        seconds = self.parse_time_string(time_string)
+        self.interval[0] = seconds
+
+    def get_rest_interval(self):
+        return self.interval[1]
+
+    # time string "m:ss"
+    @Slot(str)
+    def set_rest_interval(self, time_string):
+        seconds = self.parse_time_string(time_string)
+        self.interval[1] = seconds
+
+    def parse_time_string(self, time_string):
+        seconds = int(time_string[0]) * 60 + int(time_string[2:])
+        return seconds
+
     @Slot()
     def start_interval(self):
         print("starting interval timer")
@@ -69,6 +92,7 @@ class BoxingTimer(QObject):
         ]
         self.timer_active = True
         self.timer_active_signal.emit()
+        self.sound_handler.play_music()
 
     @Slot()
     def stop_timer(self):
@@ -99,6 +123,12 @@ class BoxingTimer(QObject):
     )
     timer_active_property = Property(bool, get_timer_active, notify=timer_active_signal)
     time_to_rest_property = Property(bool, get_time_to_rest, notify=time_to_rest_signal)
+    work_interval_property = Property(
+        str, get_work_interval, set_work_interval, notify=intervals_updated
+    )
+    rest_interval_property = Property(
+        str, get_rest_interval, set_rest_interval, notify=intervals_updated
+    )
 
     # Methods
     def timer_tick(self):
