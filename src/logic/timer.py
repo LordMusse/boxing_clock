@@ -63,7 +63,7 @@ class BoxingTimer(QObject):
         return self.time_to_rest
 
     def get_work_interval(self):
-        return self.interval[0]
+        return self.format_time_string(self.interval[0])
 
     # time string "m:ss"
     @Slot(str)
@@ -72,7 +72,7 @@ class BoxingTimer(QObject):
         self.interval[0] = seconds
 
     def get_rest_interval(self):
-        return self.interval[1]
+        return self.format_time_string(self.interval[1])
 
     # time string "m:ss"
     @Slot(str)
@@ -83,6 +83,9 @@ class BoxingTimer(QObject):
     def parse_time_string(self, time_string):
         seconds = int(time_string[0]) * 60 + int(time_string[2:])
         return seconds
+
+    def format_time_string(self, seconds):
+        return "{0}:{1:02d}".format(seconds // 60, seconds % 60)
 
     @Slot()
     def start_interval(self):

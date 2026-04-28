@@ -70,7 +70,7 @@ Rectangle {
             height: 4
         }
         TextInput {
-            text: boxing_timer.total_repetitions_property
+            text: boxing_timer.work_interval_property
             activeFocusOnTab: true
             font.pixelSize: 24
             onEditingFinished: {
@@ -96,7 +96,7 @@ Rectangle {
             height: 4
         }
         TextInput {
-            text: boxing_timer.total_repetitions_property
+            text: boxing_timer.rest_interval_property
             activeFocusOnTab: true
             font.pixelSize: 24
             onEditingFinished: {
