@@ -92,7 +92,10 @@ class BoxingTimer(QObject):
         ]
         self.timer_active = True
         self.timer_active_signal.emit()
-        self.sound_handler.play_music()
+        if self.interval_number % 2 == 0:
+            self.sound_handler.play_music()
+        else:
+            self.sound_handler.pause_music()
 
     @Slot()
     def stop_timer(self):
@@ -158,13 +161,11 @@ class BoxingTimer(QObject):
         elif self.interval_number % 2 == 0:
             self.time_to_rest = False
             self.time_to_rest_signal.emit()
-            self.sound_handler.play_music()
             self.start_interval()
         # prepare rest
         else:
             self.time_to_rest = True
             self.time_to_rest_signal.emit()
-            self.sound_handler.pause_music()
             self.start_interval()
 
 
