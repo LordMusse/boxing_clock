@@ -11,14 +11,14 @@ Rectangle {
         spacing: 4
         anchors.verticalCenter: stats.verticalCenter
         anchors.left: stats.left
-        anchors.leftMargin: spacing
+        anchors.leftMargin: 48
         Text {
             text: boxing_timer.current_repetition_property
             font.pixelSize: 24
         }
         Rectangle {
             color: "black"
-            width: 16
+            width: 50
             height: 4
         }
         Text {
@@ -33,7 +33,7 @@ Rectangle {
         spacing: 4
         anchors.verticalCenter: stats.verticalCenter
         anchors.left: interval_status.right
-        anchors.leftMargin: spacing
+        anchors.leftMargin: 48
         Text {
             text: "Mängd intervaller"
             font.pixelSize: 24
@@ -59,7 +59,7 @@ Rectangle {
         spacing: 4
         anchors.verticalCenter: stats.verticalCenter
         anchors.left: interval_setting.right
-        anchors.leftMargin: spacing
+        anchors.leftMargin: 48
         Text {
             text: "Tid att slåss"
             font.pixelSize: 24
@@ -85,7 +85,7 @@ Rectangle {
         spacing: 4
         anchors.verticalCenter: stats.verticalCenter
         anchors.left: work_setting.right
-        anchors.leftMargin: spacing
+        anchors.leftMargin: 48
         Text {
             text: "Tid att vila"
             font.pixelSize: 24

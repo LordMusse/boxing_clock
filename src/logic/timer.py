@@ -27,7 +27,7 @@ class BoxingTimer(QObject):
         self.timer_active = False
         self.interval_number = 0
         self.interval = [120, 30]  # seconds
-        self.interval_repetitions = 8
+        self.interval_repetitions = 400
         self.seconds_remaining = self.interval[self.interval_number]  # seconds
         self.time_to_rest = False
 
@@ -44,17 +44,14 @@ class BoxingTimer(QObject):
         return self.timer_active
 
     def get_current_repetition(self):
-        current_repetition = self.interval_repetitions // 2 - ceil(
-            self.interval_number / self.interval_repetitions
-        )
-        print("current_repetition: {0}".format(current_repetition))
-        return current_repetition
+        return self.interval_repetitions // 2 - (self.interval_number + 1) // 2
 
     def get_total_repetitions(self):
         return self.interval_repetitions // 2
 
     def set_total_repetitions(self, repetitions):
         self.interval_repetitions = repetitions * 2
+        self.interval_completed.emit()
 
     def get_interval_number(self):
         return self.interval_number
@@ -70,6 +67,10 @@ class BoxingTimer(QObject):
     def set_work_interval(self, time_string):
         seconds = self.parse_time_string(time_string)
         self.interval[0] = seconds
+        self.intervals_updated.emit()
+        if not self.timer_active:
+            self.seconds_remaining = self.interval[self.interval_number % len(self.interval)]
+            self.time_updated.emit()
 
     def get_rest_interval(self):
         return self.format_time_string(self.interval[1])
@@ -79,6 +80,7 @@ class BoxingTimer(QObject):
     def set_rest_interval(self, time_string):
         seconds = self.parse_time_string(time_string)
         self.interval[1] = seconds
+        self.intervals_updated.emit()
 
     def parse_time_string(self, time_string):
         seconds = int(time_string[0]) * 60 + int(time_string[2:])
@@ -90,6 +92,7 @@ class BoxingTimer(QObject):
     @Slot()
     def start_interval(self):
         print("starting interval timer")
+        self.sound_handler.double_beep()
         self.seconds_remaining = self.interval[
             self.interval_number % len(self.interval)
         ]
@@ -109,7 +112,10 @@ class BoxingTimer(QObject):
         self.seconds_remaining = self.interval[
             self.interval_number % len(self.interval)
         ]
+        self.time_to_rest = False
+        self.time_to_rest_signal.emit()
         self.time_updated.emit()
+        self.interval_completed.emit()
         self.sound_handler.pause_music()
 
     @Slot()
@@ -155,10 +161,9 @@ class BoxingTimer(QObject):
     def end_of_repetition(self):
         # if all is done
         self.interval_number += 1
-        for i in range(3):
-            self.sound_handler.beep()
+        self.interval_completed.emit()
         if self.interval_number >= self.interval_repetitions:
-            self.stop_timer
+            self.stop_timer()
             self.timer_complete.emit()
         # even intervals are work now
         elif self.interval_number % 2 == 0:

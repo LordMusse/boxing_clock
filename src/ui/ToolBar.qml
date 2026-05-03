@@ -5,14 +5,33 @@ Rectangle {
   id: toolbar
 
   Button {
-    id: start_interval
-    width: toolbar.width/2
+    id: shutdown
+    width: toolbar.width * 0.15
     anchors {
       top: toolbar.top
       bottom: toolbar.bottom
       left: toolbar.left
     }
+    text: "shutdown"
+    font.pixelSize: 32
+    font.bold: true
+    palette.buttonText: "black"
+    z: 1000
+    onClicked: Qt.quit()
+  }
+
+  Button {
+    id: start_interval
+    width: toolbar.width * 0.35
+    anchors {
+      top: toolbar.top
+      bottom: toolbar.bottom
+      left: shutdown.right
+    }
     text: boxing_timer.timer_active_property ? "stop" : "start"
+    font.pixelSize: 32
+    font.bold: true
+    palette.buttonText: "black"
     z: 1000
     onClicked: {
       if (boxing_timer.timer_active_property){

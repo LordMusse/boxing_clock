@@ -12,7 +12,7 @@ Rectangle {
     anchors.topMargin: 24
     text: boxing_timer.time_to_rest_property ? "Dags att vila gubbar!" : "Dags att slåss!"
     color: boxing_timer.time_to_rest_property ? "black" : "white"
-    font.pixelSize: 24
+    font.pixelSize: 72
     renderType: Text.CurveRendering
     antialiasing: true
   }

@@ -21,6 +21,10 @@ class SoundHandler(QObject):
         self.player.setSource(QUrl.fromLocalFile("./sound/beep.wav"))
         self.player.play()
 
+    def double_beep(self):
+        self.beep()
+        QTimer.singleShot(200, self.beep)
+
     def play_music(self):
         os.system("playerctl play")
 
