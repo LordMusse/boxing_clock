@@ -14,11 +14,11 @@ class SoundHandler(QObject):
         super().__init__()
         self.player = QMediaPlayer()
         self.audio_output = QAudioOutput()
-        self.audio_output.setVolume(50)
+        self.audio_output.setVolume(0.8)
         self.player.setAudioOutput(self.audio_output)
 
     def beep(self):
-        self.player.setSource(QUrl.fromLocalFile("./sound/beep.wav"))
+        self.player.setSource(QUrl.fromLocalFile("./sound/beep.mp3"))
         self.player.play()
 
     def double_beep(self):
