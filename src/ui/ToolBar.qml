@@ -21,12 +21,28 @@ Rectangle {
   }
 
   Button {
-    id: start_interval
-    width: toolbar.width * 0.35
+    id: switch_window
+    width: toolbar.width * 0.15
     anchors {
       top: toolbar.top
       bottom: toolbar.bottom
       left: shutdown.right
+    }
+    text: "music"
+    font.pixelSize: 32
+    font.bold: true
+    palette.buttonText: "black"
+    z: 1000
+    onClicked: boxing_timer.switch_window()
+  }
+
+  Button {
+    id: start_interval
+    width: toolbar.width * 0.20
+    anchors {
+      top: toolbar.top
+      bottom: toolbar.bottom
+      left: switch_window.right
     }
     text: boxing_timer.timer_active_property ? "stop" : "start"
     font.pixelSize: 32

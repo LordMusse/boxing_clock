@@ -1,3 +1,4 @@
+import subprocess
 from math import *
 
 from PySide6.QtCore import Property, QObject, QTimer, Signal, Slot
@@ -27,7 +28,7 @@ class BoxingTimer(QObject):
         self.timer_active = False
         self.interval_number = 0
         self.interval = [120, 30]  # seconds
-        self.interval_repetitions = 400
+        self.interval_repetitions = 399
         self.seconds_remaining = self.interval[self.interval_number]  # seconds
         self.time_to_rest = False
 
@@ -44,13 +45,13 @@ class BoxingTimer(QObject):
         return self.timer_active
 
     def get_current_repetition(self):
-        return self.interval_repetitions // 2 - (self.interval_number + 1) // 2
+        return (self.interval_repetitions - self.interval_number + 1) // 2
 
     def get_total_repetitions(self):
-        return self.interval_repetitions // 2
+        return (self.interval_repetitions + 1) // 2
 
     def set_total_repetitions(self, repetitions):
-        self.interval_repetitions = repetitions * 2
+        self.interval_repetitions = repetitions * 2 - 1
         self.interval_completed.emit()
 
     def get_interval_number(self):
@@ -98,6 +99,7 @@ class BoxingTimer(QObject):
         ]
         self.timer_active = True
         self.timer_active_signal.emit()
+        self.time_updated.emit()
         if self.interval_number % 2 == 0:
             self.sound_handler.play_music()
         else:
@@ -117,6 +119,10 @@ class BoxingTimer(QObject):
         self.time_updated.emit()
         self.interval_completed.emit()
         self.sound_handler.pause_music()
+
+    @Slot()
+    def switch_window(self):
+        subprocess.Popen(["xdotool", "key", "alt+Tab"])
 
     @Slot()
     def pedal_pressed(self):
@@ -153,6 +159,7 @@ class BoxingTimer(QObject):
                     self.sound_handler.beep()
                 case 0:
                     self.end_of_repetition()
+                    return
             self.time_updated.emit()
             print(self.time_remaining_property)
         else:
