@@ -23,7 +23,7 @@ class SoundHandler(QObject):
 
     def double_beep(self):
         self.beep()
-        QTimer.singleShot(200, self.beep)
+        QTimer.singleShot(500, self.beep)
 
     def play_music(self):
         os.system("playerctl play")
