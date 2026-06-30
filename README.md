@@ -32,3 +32,10 @@ Built with python and QML
 
 Mediacontrol using playerctl on linux:
 https://github.com/altdesktop/playerctl
+
+### Dependencies
+
+```bash
+sudo apt install libportaudio2
+pip install -r src/requirements.txt
+```
